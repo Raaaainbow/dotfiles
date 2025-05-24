@@ -12,7 +12,7 @@ in
   programs.git = {
     enable = true;
     userName = "Raaaainbow";
-    userEmail = "sebastian@tjr.dk";
+    userEmail = "seba7204@gmail.com";
   };
 
   gtk.enable = true;
@@ -22,16 +22,14 @@ in
     name = "Bibata-Modern-Ice";
   };
 
-/*
   gtk.theme = {
     package = pkgs.gruvbox-gtk-theme;
-    name = "oomox-gruvbox-dark";
+    name = "GruvboxPlus";
   };
-*/
 
   gtk.iconTheme = {
     package = pkgs.gruvbox-dark-icons-gtk;
-    name = "";
+    name = "oomox-gruvbox-dark";
   };
 
   qt = {
@@ -41,15 +39,36 @@ in
     style.package = pkgs.adwaita-qt;
   };
   
-  programs.neovim = {
+programs.neovim = {
     enable = true;
     vimAlias = true;
+    extraPackages = [
+      # LSP servers
+      pkgs.llvmPackages_20.clang-tools     
+      pkgs.nil
+      pkgs.jdt-language-server
+      pkgs.lua-language-server
+      pkgs.pyright
+      pkgs.texlab
+      pkgs.bash-language-server
+      
+      # Formatters
+      pkgs.shfmt                    # Bash formatter
+      pkgs.clang-tools              # C/C++ formatter (already included in clang-tools above)
+      pkgs.google-java-format       # Java formatter
+      pkgs.nixpkgs-fmt             # Nix formatter
+      pkgs.black                    # Python formatter
+      pkgs.python3Packages.isort    # Python import sorter
+      pkgs.texlive.combined.scheme-medium # Includes latexindent for LaTeX formatting
+      
+      # Other dependencies
+      pkgs.glib # NvimTree delete dependency
+    ];
   };
 
   programs.bash = {
     enable = true;
     shellAliases = {
-    # 
     };
   };
 
@@ -62,10 +81,15 @@ in
   # release notes.
   home.stateVersion = "24.11"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    pkgs.gruvbox-dark-icons-gtk
+  home.packages = with pkgs; [
+    gruvbox-dark-icons-gtk
+    pkgs.llvmPackages_20.clang-tools     
+    pkgs.nil
+    pkgs.jdt-language-server
+    pkgs.lua-language-server
+    pkgs.pyright
+    pkgs.texlab
+    appimage-run
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
